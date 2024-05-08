@@ -1,22 +1,59 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/home/home",
+    "pages/write/write",
+    "pages/listening/listening",
+    "pages/condition/condition",
+    "pages/me/me"
   ],
   "window": {
-    "navigationBarTextStyle": "black",
-    "navigationStyle": "custom"
-  },
-  "style": "v2",
-  "renderer": "skyline",
-  "rendererOptions": {
-    "skyline": {
-      "defaultDisplayBlock": true,
-      "disableABTest": true,
-      "sdkVersionBegin": "3.0.0",
-      "sdkVersionEnd": "15.255.255"
-    }
-  },
-  "componentFramework": "glass-easel",
-  "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#000000",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "Evalinguist"
+  }
+  
+   ,
+  "tabBar": {
+    "color": "#a9b7b7",
+    "selectedColor": "#11cd6e",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "images/home.jpg",
+        "selectedIconPath": "images/home.jpg"
+      },
+      {
+        "pagePath": "pages/write/write",
+        "text": "写作",
+        "iconPath": "images/write.jpg",
+        "selectedIconPath": "images/write.jpg"
+      },
+      {
+        "pagePath": "pages/listening/listening",
+        "text": "听力",
+        "iconPath": "images/listening.jpg",
+        "selectedIconPath": "images/listening.jpg"
+      },
+      {
+        "pagePath": "pages/condition/condition",
+        "text": "状况",
+        "iconPath": "images/condition.jpg",
+        "selectedIconPath": "images/condition.jpg"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的",
+        "iconPath": "images/me.jpg",
+        "selectedIconPath": "images/me.jpg"
+      }
+      
+    ]
+    
+  }
+  
 }
+
