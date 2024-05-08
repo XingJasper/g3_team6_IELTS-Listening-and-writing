@@ -1,0 +1,34 @@
+<view class="container">
+  <!-- 滑动图片区域 -->
+  <swiper class="swiper" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{5000}}" duration="{{1000}}">
+    <swiper-item>
+      <image src="/images/home1.jpg" mode="aspectFill"></image>
+    </swiper-item>
+    <swiper-item>
+      <image src="/images/home2.jpg" mode="aspectFill"></image>
+    </swiper-item>
+    <!-- 可以添加更多的 swiper-item 来显示更多图片 -->
+  </swiper>
+</view>
+<view class="description">
+  <text class="heading">欢迎使用我的学习助手小程序！</text>
+  <text>本小程序提供一站式语言学习服务，涵盖听力、口语、写作和语法等多方面练习，以帮助您有效提高语言技能。</text>
+  
+  <!-- 如何开始部分 -->
+  <view class="box">
+    <text class="sub-heading">如何开始使用：</text>
+    <text>1. 登录和导航：打开小程序后，使用微信账号登录，并浏览主界面上的功能导航。</text>
+    <text>2. 选择模块：根据您的学习需求，选择相应的学习模块，如“听力练习”或“写作练习”。</text>
+    <text>3. 开始学习：点击您选择的模块，开始进行相关的练习或教程，实时跟踪您的学习进度。</text>
+    <text>4. 利用工具：利用小程序提供的额外工具，如进度追踪和评分反馈，优化您的学习效果。</text>
+  </view>
+
+  <!-- 提示部分 -->
+  <view class="box">
+    <text class="sub-heading">使用提示：</text>
+    <text>为了获得最佳学习体验，请确保您的网络连接稳定。如果您在使用过程中遇到任何问题，可以通过“联系我们”功能与我们取得联系。</text>
+  </view>
+</view>
+
+
+
