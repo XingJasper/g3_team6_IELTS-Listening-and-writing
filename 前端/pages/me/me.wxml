@@ -1,4 +1,5 @@
+<!-- pages/login/login.wxml -->
 <view class="container">
-  <!-- 登录按钮 -->
-  <button open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击登录</button>
+  <button bindtap="onLoginTap">点击登录</button>
+  <text>{{ loginMessage }}</text>
 </view>
