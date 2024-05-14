@@ -1,3 +1,4 @@
+
 // 假设 wx.login 已成功获取到了 code
 wx.login({
     success: function(loginResult) {
