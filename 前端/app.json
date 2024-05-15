@@ -5,6 +5,7 @@
     "pages/listening/listening",
     "pages/condition/condition",
     "pages/me/me"
+  
   ],
   "window": {
     "backgroundTextStyle": "light",

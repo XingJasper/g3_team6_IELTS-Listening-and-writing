@@ -17,12 +17,15 @@
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
-    }
+    },
+    "minifyWXML": true
   },
   "condition": {},
   "editorSetting": {
     "tabIndent": "auto",
     "tabSize": 2
   },
-  "appid": "wx482e3ef8f499d88f"
+  "appid": "wx482e3ef8f499d88f",
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
+  "projectname": "%E5%89%8D%E7%AB%AF"
 }

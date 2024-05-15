@@ -1,19 +1,30 @@
 // app.js
+const app = getApp();  // 获取小程序全局应用实例
+
+
 App({
   onLaunch() {
-    // 展示本地存储能力
-    const logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
+    wx.cloud.init({
+      //云开发环境id
+      env: 'ielts-0gyw5rst782d2e3b'  
+    }),
 
-    // 登录
-    wx.login({
+    //调用云函数
+    wx.cloud.callFunction({
+      name: 'get_openId',
       success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        //获取用户openid
+        this.globalData.user_openid = res.result.openid
+        console.log(this.globalData.user_openid)
       }
     })
   },
+  //全局数据
   globalData: {
+    //用户openid
+    user_openid: '',
+    //用户信息
     userInfo: null
   }
 })
+
