@@ -1,0 +1,30 @@
+<!-- pages/speakingPart1/speakingPart1.wxml -->
+<view class="container">
+  <view class="weui-form">
+    <view class="weui-form__text-area">
+      <view class="weui-form__title">雅思口语 Part 1</view>
+      <view class="weui-form__desc">请按下按钮开始录音，并在录音结束后上传。</view>
+    </view>
+
+    <view class="weui-btn-area">
+      <button wx:if="{{!recording}}" class="weui-btn weui-btn_primary" bindtap="startRecording">开始录音</button>
+      <button wx:if="{{recording}}" class="weui-btn weui-btn_warn" bindtap="stopRecording">停止录音</button>
+      <button wx:if="{{audioPath}}" class="weui-btn weui-btn_default" bindtap="uploadAudio">上传录音</button>
+    </view>
+
+    <view wx:if="{{score !== null}}" class="weui-cells__title">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+          <view class="weui-cell__title">评分:</view>
+          <view class="weui-cell__value">{{score}}</view>
+        </view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+          <view class="weui-cell__title">反馈:</view>
+          <view class="weui-cell__value">{{feedback}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

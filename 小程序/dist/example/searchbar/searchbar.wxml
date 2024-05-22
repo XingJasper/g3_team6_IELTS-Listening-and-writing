@@ -1,0 +1,15 @@
+<page-meta root-font-size="system"/>
+<view class="page" data-weui-theme="{{theme}}" data-weui-mode="{{mode}}">
+    <view class="page__hd">
+      <view class="page__title">SearchBar</view>
+      <view class="page__desc">搜索栏</view>
+    </view>
+    <view class="page__bd">
+        <view class="weui-btn-area">
+            <view aria-role="button" class="weui-btn weui-btn_default" bindtap="openSearchFilled">Filled Default</view>
+            <view aria-role="button" class="weui-btn weui-btn_default" bindtap="openSearchGrey">Filled Grey</view>
+            <view aria-role="button" class="weui-btn weui-btn_default" bindtap="openSearchOutlined">Outlined</view>
+            <view aria-role="button" class="weui-btn weui-btn_default" bindtap="openSearchHomepage">Homepage</view>
+        </view>
+    </view>
+</view>

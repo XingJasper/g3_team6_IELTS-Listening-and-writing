@@ -1,7 +1,0 @@
-<!--pages/listening/listening.wxml-->
-<text>pages/listening/listening.wxml</text>
-
-<!-- 在你的小程序的页面WXML文件中 -->
-<view>
-  登录Code: <text>{{code}}</text>
-</view>

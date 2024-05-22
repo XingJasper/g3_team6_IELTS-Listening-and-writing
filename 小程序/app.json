@@ -2,9 +2,13 @@
   "pages": [
     "pages/home/home",
     "pages/write/write",
-    "pages/listening/listening",
+    "pages/speaking/speaking",
     "pages/condition/condition",
-    "pages/me/me"
+    "pages/me/me",
+    "pages/speakingPart1/speakingPart1"
+    
+    
+    
   
   ],
   "window": {
@@ -34,8 +38,8 @@
         "selectedIconPath": "images/write.jpg"
       },
       {
-        "pagePath": "pages/listening/listening",
-        "text": "听力",
+        "pagePath": "pages/speaking/speaking",
+        "text": "口语",
         "iconPath": "images/listening.jpg",
         "selectedIconPath": "images/listening.jpg"
       },
