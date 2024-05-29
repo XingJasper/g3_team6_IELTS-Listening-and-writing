@@ -16,21 +16,11 @@
 
   <!-- 面板区域 -->
   <view class="panel">
-    <button class="panel-list-item" bindtap="showSupportImageModal">
-    联系客服
-  </button>
-
-
-    <button class="panel-list-item" bindtap="settings">
-      设置
-    </button>
-
-    <button class="panel-list-item" bindtap="logout">
-      退出登录
-    </button>
+    <button class="panel-list-item" bindtap="showSupportImageModal">联系客户</button>
+    <button class="panel-list-item" bindtap="settings">设置</button>
+    <button class="panel-list-item" bindtap="logout">退出登录</button>
   </view>
   <modal hidden="{{!showSupportImageModal}}" bindtap="hideSupportImageModal">
-  <image src="/images/cnt.jpg"></image>
-</modal>
-
+    <image src="/images/cnt.jpg"></image>
+  </modal>
 </block>

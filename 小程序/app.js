@@ -1,4 +1,5 @@
 // app.js
+
 const app = getApp();  // 获取小程序全局应用实例
 
 

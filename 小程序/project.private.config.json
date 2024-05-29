@@ -3,7 +3,7 @@
   "description": "项目私有配置文件",
   "projectname": "IELTS",
   "setting": {
-    "compileHotReLoad": true,
+    "compileHotReLoad": false,
     "urlCheck": true
   },
   "libVersion": "3.4.3"

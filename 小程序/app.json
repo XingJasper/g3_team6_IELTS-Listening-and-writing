@@ -5,8 +5,13 @@
     "pages/speaking/speaking",
     "pages/condition/condition",
     "pages/me/me",
-    "pages/speakingPart1/speakingPart1"
+    "pages/speakingPart1/speakingPart1",
+    "pages/writePart1/writePart1",
+    "pages/writePart2/writePart2",
+    "pages/uploadPage/uploadPage",
+    "pages/writeAnswer/writeAnswer"
     
+  
     
     
   
