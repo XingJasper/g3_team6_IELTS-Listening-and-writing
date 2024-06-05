@@ -1,81 +1,105 @@
 // pages/speakingPart1/speakingPart1.js
-const recorderManager = wx.getRecorderManager();
 
-Page({
-  data: {
-    recording: false,
-    audioPath: '',
-    score: null,
-    feedback: ''
-  },
-
-  onLoad: function() {
-    const options = {
-      duration: 60000, // 最大录音时长 60 秒
-      sampleRate: 44100,
-      numberOfChannels: 1,
-      encodeBitRate: 192000,
-      format: 'mp3',
-    };
-
-    recorderManager.onStart(() => {
-      console.log('recorder start');
-    });
-
-    recorderManager.onStop((res) => {
-      console.log('recorder stop', res);
-      const { tempFilePath } = res;
-      this.setData({ audioPath: tempFilePath, recording: false });
-    });
-
-    recorderManager.onError((err) => {
-      console.error('recorder error', err);
-      wx.showToast({ title: '录音失败', icon: 'none' });
+const options = {
+    duration: 60000, // 最长录音时长（ms）
+    sampleRate: 44100, // 采样率
+    numberOfChannels: 1, // 录音通道数
+    encodeBitRate: 96000, // 编码码率
+    format: 'mp3' // 音频格式
+  };
+  
+  Page({
+    data: {
+      categories: [
+        { id: 1, name: '工作', questions: ['Can you describe your job?', 'How do you feel about your coworkers?'] },
+        { id: 2, name: '学习', questions: ['What subject are you studying?', 'Why did you choose this subject?'] },
+        { id: 3, name: '爱好', questions: ['Do you have any hobbies?', 'How did you start this hobby?'] }
+      ],
+      currentCategory: null,
+      currentQuestion: '',
+      recording: false,
+      audioPath: '',
+      score: null,
+      feedback: ''
+    },
+  
+    onLoad: function() {
+      this.setInitialCategory();
+      // 绑定 recorderManager 事件
+      const recorderManager = wx.getRecorderManager();
+      
+      recorderManager.onStart(() => {
+        console.log('Recorder start');
+      });
+  
+      recorderManager.onStop((res) => {
+        console.log('Recorder stop', res);
+        this.setData({
+          audioPath: res.tempFilePath,
+          recording: false
+        });
+      });
+  
+      recorderManager.onError((res) => {
+        console.log('Recorder error', res);
+        wx.showToast({
+          title: '录音失败，请重试',
+          icon: 'none'
+        });
+      });
+  
+      this.recorderManager = recorderManager;
+    },
+  
+    setInitialCategory: function() {
+      const initialCategory = this.data.categories[0];
+      this.setData({
+        currentCategory: initialCategory,
+        currentQuestion: this.getRandomQuestion(initialCategory.questions)
+      });
+    },
+  
+    onCategoryChange: function(e) {
+      const newCategory = this.data.categories[e.detail.value];
+      this.setData({
+        currentCategory: newCategory,
+        currentQuestion: this.getRandomQuestion(newCategory.questions)
+      });
+    },
+  
+    refreshQuestion: function() {
+      this.setData({
+        currentQuestion: this.getRandomQuestion(this.data.currentCategory.questions)
+      });
+    },
+  
+    getRandomQuestion: function(questions) {
+      const randomIndex = Math.floor(Math.random() * questions.length);
+      return questions[randomIndex];
+    },
+  
+    startRecording: function() {
+      this.setData({ recording: true });
+      this.recorderManager.start(options);
+      console.log('开始录音');
+    },
+  
+    stopRecording: function() {
       this.setData({ recording: false });
-    });
-
-    this.recorderOptions = options;
-  },
-
-  startRecording: function() {
-    this.setData({ recording: true });
-    recorderManager.start(this.recorderOptions);
-  },
-
-  stopRecording: function() {
-    recorderManager.stop();
-  },
-
-  uploadAudio: function() {
-    const filePath = this.data.audioPath;
-    if (!filePath) {
-      wx.showToast({ title: '请先录音', icon: 'none' });
-      return;
+      this.recorderManager.stop();
+      console.log('停止录音');
+    },
+  
+    uploadAudio: function() {
+      if (!this.data.audioPath) {
+        wx.showToast({
+          title: '请先录音',
+          icon: 'none'
+        });
+        return;
+      }
+      console.log('上传录音', this.data.audioPath);
+      // 这里添加具体的上传逻辑
     }
-    wx.cloud.uploadFile({
-      cloudPath: `speakingPart1/${Date.now()}-${Math.floor(Math.random() * 1000)}.mp3`,
-      filePath,
-      success: res => {
-        wx.showToast({ title: '上传成功', icon: 'success' });
-        this.evaluateSpeaking(res.fileID);
-      },
-      fail: err => {
-        console.error('上传音频失败', err);
-        wx.showToast({ title: '上传失败', icon: 'none' });
-      }
-    });
-  },
-
-  evaluateSpeaking: function(fileID) {
-    wx.cloud.callFunction({
-      name: 'scoreSpeaking',
-      data: { fileID, part: 'part1' },
-      success: res => {
-        this.setData({ score: res.result.score, feedback: res.result.feedback });
-      },
-      fail: err => {
-        console.error('[云函数] [scoreSpeaking] 调用失败', err);
-      }
-    });
-  }
-});
+  });
+  
