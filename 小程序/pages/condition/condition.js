@@ -1,106 +1,58 @@
-// pages/home/home.js
-const app = getApp();  // 获取小程序全局应用实例
-
+// pages/condition/condition.js
 Page({
   data: {
-    userInfo: null,
-    showSupportImageModal: false // 新增Modal显示控制
+    showModal: false,
+    feedbacks: []
   },
 
-  showSupportImageModal() {
+  // 显示弹窗
+  showModal: function() {
     this.setData({
-      showSupportImageModal: true
+      showModal: true
     });
-  },
 
-  hideSupportImageModal() {
-    this.setData({
-      showSupportImageModal: false
-    });
-  },
-
-  // 登录方法
-  login() {
-    // 使用 wx.getUserProfile 获取用户信息
-    wx.getUserProfile({
-      desc: '获取用户信息以便提供更好的服务', // 添加描述
-      success: profileRes => {
-        console.log('获取用户信息成功', profileRes.userInfo);
-        const user = profileRes.userInfo;
-
-        // 设置全局用户信息
-        app.globalData.userInfo = user;
-
-        // 设置局部用户信息
-        this.setData({
-          userInfo: user
-        });
-
-        // 将数据添加到数据库
-        wx.cloud.database().collection('userInfo').add({
-          data: {
-            avatarUrl: user.avatarUrl,
-            nickName: user.nickName
-          },
-          success: dbRes => {
-            console.log('用户信息存储成功', dbRes);
-          },
-          fail: err => {
-            console.error('用户信息存储失败', err);
-          }
-        });
-
-        // 调用云函数获取 openid 等身份标识符
-        wx.cloud.callFunction({
-          name: 'login', // 替换为您的云函数名称
-          success: cloudRes => {
-            console.log('云函数调用成功', cloudRes.result);
-            // 可以将 openid 存储到全局数据或本地存储中
-            app.globalData.openid = cloudRes.result.openid;
-          },
-          fail: err => {
-            console.error('云函数调用失败', err);
-          }
-        });
+    // 获取所有反馈
+    const db = wx.cloud.database();
+    db.collection('userWritings').orderBy('submissionDate', 'desc').get({
+      success: res => {
+        if (res.data.length > 0) {
+          const feedbacks = res.data.map(record => record.feedback);
+          this.setData({
+            feedbacks: feedbacks
+          });
+        } else {
+          wx.showToast({
+            title: '没有找到记录',
+            icon: 'none'
+          });
+        }
       },
       fail: err => {
-        console.error('获取用户信息失败', err);
+        console.error('获取记录失败', err);
+        wx.showToast({
+          title: '获取记录失败',
+          icon: 'none'
+        });
       }
     });
   },
 
-  // 登出方法
-  logout() {
-    app.globalData.userInfo = null;
+  // 隐藏弹窗
+  hideModal: function() {
     this.setData({
-      userInfo: null
+      showModal: false
     });
   },
 
-  // 添加题目
-  addQuestion() {
-    wx.navigateTo({
-      url: '/pages/uploadPage/uploadPage'
-    });
+  // 听力情况记录按钮点击事件处理函数
+  recordListening: function() {
+    console.log("听力情况记录按钮被点击");
+    // TODO: 添加具体的听力记录操作
   },
 
-  onLoad: function (options) {
-    this.setData({
-      userInfo: app.globalData.userInfo
-    });
-  },
-
-  onReady() {},
-
-  onShow() {},
-
-  onHide() {},
-
-  onUnload() {},
-
-  onPullDownRefresh() {},
-
-  onReachBottom() {},
-
-  onShareAppMessage() {}
+  // 写作情况记录按钮点击事件处理函数
+  recordWriting: function() {
+    console.log("写作情况记录按钮被点击");
+    this.showModal();
+  }
 });

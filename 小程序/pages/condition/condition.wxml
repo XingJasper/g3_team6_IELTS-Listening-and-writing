@@ -1,27 +1,26 @@
-<!-- pages/home/home.wxml -->
-<block wx:if="{{!userInfo}}">
-  <!-- 登录区域 -->
-  <view class="login-container">
-    <image src="/images/me.jpg" class="contact-filled" mode="widthFix"></image>
-    <button class="btn-login" bindtap="login">一键登录</button>
-    <text class="tip-text">登录后尽享更多权益</text>
+<!-- pages/condition/condition.wxml -->
+<view class="container">
+  <button bindtap="recordListening">听力情况记录</button>
+  <button bindtap="recordWriting">写作情况记录</button>
+  
+  <!-- 弹窗 -->
+  <view wx:if="{{showModal}}" class="modal">
+    <view class="modal-content">
+      <view class="modal-header">
+        <text>所有记录</text>
+      </view>
+      <view class="modal-body">
+        <scroll-view scroll-y="true" class="scroll-view">
+          <block wx:for="{{feedbacks}}" wx:key="index">
+            <view class="record-item">
+              <text>{{item}}</text>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+      <view class="modal-footer">
+        <button bindtap="hideModal">关闭</button>
+      </view>
+    </view>
   </view>
-</block>
-
-<block wx:else>
-  <!-- 头像昵称区域 -->
-  <view class="top-box">
-    <image src="{{userInfo.avatarUrl}}" class="avatar"></image>
-    <view class="nickname">{{userInfo.nickName}}</view>
-  </view>
-
-  <!-- 面板区域 -->
-  <view class="panel">
-    <button class="panel-list-item" bindtap="showSupportImageModal">联系客户</button>
-    <button class="panel-list-item" bindtap="addQuestion">添加题目</button>
-    <button class="panel-list-item" bindtap="logout">退出登录</button>
-  </view>
-  <modal hidden="{{!showSupportImageModal}}" bindtap="hideSupportImageModal">
-    <image src="/images/cnt.jpg"></image>
-  </modal>
-</block>
+</view>

@@ -29,8 +29,8 @@ button {
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
-  width: 80%;
-  max-height: 70%; /* 固定大小 */
+  width: 70%;  /* 调整弹窗宽度 */
+  max-height: 50%;  /* 调整弹窗高度 */
   display: flex;
   flex-direction: column;
 }
@@ -43,11 +43,11 @@ button {
 
 .modal-body {
   flex: 1;
-  overflow: hidden; /* 隐藏内容溢出 */
+  overflow: hidden;  /* 隐藏内容溢出 */
 }
 
 .scroll-view {
-  height: 100%; /* 设置滚动视图高度 */
+  height: 100%;  /* 设置滚动视图高度 */
 }
 
 .modal-footer {

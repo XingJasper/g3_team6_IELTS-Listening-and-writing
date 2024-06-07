@@ -1,3 +1,4 @@
+<!-- pages/home/home.wxml -->
 <block wx:if="{{!userInfo}}">
   <!-- 登录区域 -->
   <view class="login-container">
@@ -17,7 +18,7 @@
   <!-- 面板区域 -->
   <view class="panel">
     <button class="panel-list-item" bindtap="showSupportImageModal">联系客户</button>
-    <button class="panel-list-item" bindtap="settings">添加题目</button>
+    <button class="panel-list-item" bindtap="addQuestion">添加题目</button>
     <button class="panel-list-item" bindtap="logout">退出登录</button>
   </view>
   <modal hidden="{{!showSupportImageModal}}" bindtap="hideSupportImageModal">
