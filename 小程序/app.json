@@ -1,0 +1,69 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/write/write",
+    "pages/speaking/speaking",
+    "pages/condition/condition",
+    "pages/me/me",
+    "pages/speakingPart1/speakingPart1",
+    "pages/writePart1/writePart1",
+    "pages/writePart2/writePart2",
+    "pages/uploadPage/uploadPage",
+    "pages/writeAnswer/writeAnswer"
+    
+  
+    
+    
+  
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#000000",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "Evalinguist"
+  }
+  
+   ,
+  "tabBar": {
+    "color": "#a9b7b7",
+    "selectedColor": "#11cd6e",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "images/home.jpg",
+        "selectedIconPath": "images/home.jpg"
+      },
+      {
+        "pagePath": "pages/write/write",
+        "text": "写作",
+        "iconPath": "images/write.jpg",
+        "selectedIconPath": "images/write.jpg"
+      },
+      {
+        "pagePath": "pages/speaking/speaking",
+        "text": "口语",
+        "iconPath": "images/listening.jpg",
+        "selectedIconPath": "images/listening.jpg"
+      },
+      {
+        "pagePath": "pages/condition/condition",
+        "text": "状况",
+        "iconPath": "images/condition.jpg",
+        "selectedIconPath": "images/condition.jpg"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的",
+        "iconPath": "images/me.jpg",
+        "selectedIconPath": "images/me.jpg"
+      }
+      
+    ]
+    
+  }
+  
+}
+

@@ -1,0 +1,6 @@
+<!-- write.wxml -->
+<!-- write.wxml -->
+<view class="container">
+  <button class="weui-btn weui-btn_plain-default" bindtap="navigateToPart1">Part 1</button>
+  <button class="weui-btn weui-btn_plain-default" bindtap="navigateToPart2">Part 2</button>
+</view>

@@ -1,0 +1,15 @@
+<view class="container">
+  <picker mode="selector" range="{{parts}}" bindchange="bindPartChange">
+    <view class="picker">
+      选择部分: {{selectedPart}}
+    </view>
+  </picker>
+  <picker mode="selector" range="{{categories}}" bindchange="bindCategoryChange">
+    <view class="picker">
+      选择分类: {{selectedCategory}}
+    </view>
+  </picker>
+  <button bindtap="chooseImage">选择图片</button>
+  <image src="{{imageURL}}" mode="widthFix" wx:if="{{imageURL}}"></image>
+  <button bindtap="uploadImage" wx:if="{{imageURL}}">上传图片</button>
+</view>

@@ -1,0 +1,16 @@
+<view class="container">
+  <view class="category-picker">
+    <picker mode="selector" range="{{categories}}" bindchange="bindCategoryChange">
+      <view class="picker">
+        当前分类：{{selectedCategory}}
+      </view>
+    </picker>
+  </view>
+  <view class="image-container">
+    <image src="{{currentImage}}" class="prompt-image" mode="widthFix"></image>
+  </view>
+  <view class="button-container">
+    <button bindtap="chooseImage" class="button">下一题</button>
+    <button bindtap="startAnswering" class="button">开始答题</button>
+  </view>
+</view>

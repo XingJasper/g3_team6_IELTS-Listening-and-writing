@@ -1,0 +1,10 @@
+{
+  "cloudfunctionRoot": "cloud/",
+  "description": "项目私有配置文件",
+  "projectname": "IELTS",
+  "setting": {
+    "compileHotReLoad": false,
+    "urlCheck": false
+  },
+  "libVersion": "3.4.3"
+}

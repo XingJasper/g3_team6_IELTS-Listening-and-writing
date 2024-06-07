@@ -1,5 +1,0 @@
-<!-- pages/login/login.wxml -->
-<view class="container">
-  <button bindtap="onLoginTap">点击登录</button>
-  <text>{{ loginMessage }}</text>
-</view>
