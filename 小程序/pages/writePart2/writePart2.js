@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:小程序/pages/writePart2/writePart2.js
 // pages/writePart2/writePart2.js
+========
+// pages/writeAnswer/writeAnswer.js
+>>>>>>>> c8fd35238bd283f0c38e61affe1d7a8d27a9f4c1:小程序/pages/writeAnswer/writeAnswer.js
 Page({
 
   /**

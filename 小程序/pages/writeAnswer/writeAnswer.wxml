@@ -1,18 +1,2 @@
-<view class="container">
-  <image src="{{imageURL}}" mode="widthFix" wx:if="{{imageURL}}"></image>
-  <textarea 
-    placeholder="请在此输入你的写作内容..." 
-    bindinput="bindInput" 
-    value="{{writingContent}}"
-    maxlength="-1"  
-    style="height: 300px;"
-  ></textarea>
-  <button bindtap="submitWriting">提交</button>
-
-  <view wx:if="{{score}}">
-    <text>评分: {{score}}</text>
-  </view>
-  <view wx:if="{{feedback}}">
-    <text>反馈: {{feedback}}</text>
-  </view>
-</view>
+<!--pages/writeAnswer/writeAnswer.wxml-->
+<text>pages/writeAnswer/writeAnswer.wxml</text>

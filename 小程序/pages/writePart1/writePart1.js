@@ -41,7 +41,7 @@ Page({
 
   startAnswering: function() {
     wx.navigateTo({
-      url: '../writeAnswer/writeAnswer?image=' + this.data.currentImage
+      url: '../answerPage/answerPage?image=' + this.data.currentImage
     });
   },
 
