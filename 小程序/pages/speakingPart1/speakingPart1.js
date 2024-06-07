@@ -1,11 +1,9 @@
-// pages/speakingPart1/speakingPart1.js
-
 const options = {
     duration: 60000, // 最长录音时长（ms）
-    sampleRate: 44100, // 采样率
+    sampleRate: 16000, // 采样率
     numberOfChannels: 1, // 录音通道数
     encodeBitRate: 96000, // 编码码率
-    format: 'mp3' // 音频格式
+    format: 'aac' // 音频格式
   };
   
   Page({
@@ -19,15 +17,15 @@ const options = {
       currentQuestion: '',
       recording: false,
       audioPath: '',
+      transcript: '',
       score: null,
       feedback: ''
     },
   
     onLoad: function() {
       this.setInitialCategory();
-      // 绑定 recorderManager 事件
       const recorderManager = wx.getRecorderManager();
-      
+  
       recorderManager.onStart(() => {
         console.log('Recorder start');
       });
@@ -91,15 +89,94 @@ const options = {
     },
   
     uploadAudio: function() {
-      if (!this.data.audioPath) {
+      const { audioPath } = this.data;
+      if (!audioPath) {
         wx.showToast({
           title: '请先录音',
           icon: 'none'
         });
         return;
       }
-      console.log('上传录音', this.data.audioPath);
-      // 这里添加具体的上传逻辑
+  
+      wx.showLoading({
+        title: '上传中',
+      });
+  
+      const cloudPath = `audio/${Date.now()}-${Math.floor(Math.random(0, 1) * 1000)}.m4a`;
+      wx.cloud.uploadFile({
+        cloudPath,
+        filePath: audioPath,
+        success: res => {
+          console.log('上传成功', res.fileID);
+          this.callFunctionForTranscription(res.fileID);
+        },
+        fail: err => {
+          console.error('上传失败', err);
+          wx.showToast({
+            title: '上传失败，请重试',
+            icon: 'none'
+          });
+        },
+        complete: () => {
+          wx.hideLoading();
+        }
+      });
+    },
+    
+    callFunctionForTranscription: function(fileID) {
+      wx.cloud.callFunction({
+        name: 'transcribeAudio',
+        data: { fileID },
+        success: res => {
+          console.log('转写结果', res.result);
+          if (res.result.error) {
+            wx.showToast({
+              title: res.result.error,
+              icon: 'none'
+            });
+          } else {
+            this.setData({
+              transcript: res.result.transcript
+            });
+          }
+        },
+        fail: err => {
+          console.error('转写失败', err);
+          wx.showToast({
+            title: '转写失败，请重试',
+            icon: 'none'
+          });
+        }
+      });
+    },
+  
+    submitForScoring: function() {
+      const { transcript } = this.data;
+      wx.request({
+        url: 'https://api.example.com/score', // 替换为你的GPT API URL
+        method: 'POST',
+        data: { transcript },
+        success: res => {
+          console.log('评分结果', res.data);
+          this.setData({
+            score: res.data.score,
+            feedback: res.data.feedback
+          });
+        },
+        fail: err => {
+          console.error('评分失败', err);
+          wx.showToast({
+            title: '评分失败，请重试',
+            icon: 'none'
+          });
+        }
+      });
+    },
+  
+    updateTranscript: function(e) {
+      this.setData({
+        transcript: e.detail.value
+      });
     }
   });
   

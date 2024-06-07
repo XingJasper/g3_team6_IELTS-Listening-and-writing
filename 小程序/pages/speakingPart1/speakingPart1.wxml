@@ -1,4 +1,4 @@
-<!-- pages/speakingPart1/speakingPart1.wxml -->
+<!-- speakingPart1.wxml -->
 <view class="container">
   <picker mode="selector" range="{{categories}}" range-key="name" bindchange="onCategoryChange">
     <view class="picker-label">选择题目类别：{{currentCategory.name}}</view>
@@ -9,7 +9,11 @@
   <button class="btn" bindtap="refreshQuestion">刷新题目</button>
   <button class="btn" bindtap="startRecording" wx:if="!recording">开始录音</button>
   <button class="btn" bindtap="stopRecording" wx:if="recording">停止录音</button>
-  <button class="btn" bindtap="uploadAudio" wx:if="!recording && audioPath">上传并评分</button>
+  <button class="btn" bindtap="uploadAudio" wx:if="!recording && audioPath">上传并转写</button>
+  <view class="transcript-display" wx:if="transcript">
+    <textarea class="transcript-textarea" value="{{transcript}}" bindinput="updateTranscript" placeholder="核对并修改转写文本"></textarea>
+    <button class="btn" bindtap="submitForScoring">提交并评分</button>
+  </view>
   <view class="feedback-display" wx:if="score && feedback">
     <text>评分：{{score}}</text>
     <text>反馈：{{feedback}}</text>
