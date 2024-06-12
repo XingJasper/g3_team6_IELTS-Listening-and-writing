@@ -1,52 +1,34 @@
-// 引入依赖
-const cloud = require('wx-server-sdk');
+// 引入 axios 来发送 HTTP 请求
 const axios = require('axios');
 
-cloud.init();
-
-// 主函数
 exports.main = async (event, context) => {
-    const { fileID } = event; // 接收前端传来的 fileID
+  const { speech, len, cuid } = event;
 
-    try {
-        // 先调用获取 access_token 的云函数
-        const accessTokenResponse = await cloud.callFunction({
-            name: 'getAccessToken'
-        });
-        const accessToken = accessTokenResponse.result.access_token;
+  // 构造请求体
+  const data = {
+    format: 'm4a',
+    rate: 16000,
+    channel: 1,
+    token: "24.392102e0287389372566ae2368af20c7.2592000.1720340061.282335-78943325",
+    cuid: cuid,
+    speech: speech,
+    len: len
+  };
 
-        // 获取文件临时访问URL
-        const fileResult = await cloud.getTempFileURL({
-            fileList: [fileID]
-        });
-        const fileUrl = fileResult.fileList[0].tempFileURL;
+  try {
+    // 使用 axios 发送 POST 请求
+    const response = await axios({
+      method: 'post',
+      url: 'https://vop.baidu.com/server_api',
+      data: data,
+      headers: { 'Content-Type': 'application/json' }
+    });
 
-        // 调用百度语音识别API
-        const response = await axios({
-            method: 'POST',
-            url: 'https://vop.baidu.com/server_api',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: {
-                format: "m4a",
-                rate: 16000,
-                channel: 1,
-                token: accessToken,
-                cuid: "ZjHFoZMw23AuXoVEO2q8eVMNGGvMEGnP",
-                speech: event.speech,
-                len: event.len
-            }
-        });
-
-        // 处理API的响应
-        if (response.data) {
-            return { result: response.data };
-        } else {
-            throw new Error("No response from Baidu API");
-        }
-    } catch (error) {
-        console.error(error);
-        return { error: error.toString() };
-    }
+    // 处理响应
+    console.log(response.data);
+    return { result: response.data };
+  } catch (error) {
+    console.error('请求失败:', error);
+    return { error: error.toString() };
+  }
 };

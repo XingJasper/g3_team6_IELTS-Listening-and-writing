@@ -1,66 +1,55 @@
-
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    categories: ['其他', '教育', '社会', '科技'], // 新的分类
+    selectedCategory: '社会', // 默认分类
+    prompts: [],
+    currentImage: '',
+    currentIndex: 0
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-
+  onLoad: function() {
+    this.getPrompts();
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
+  getPrompts: function() {
+    const db = wx.cloud.database();
+    const { selectedCategory } = this.data;
+    db.collection('writingPrompts').where({
+      category: selectedCategory,
+      part: 'Part 2' // 修改为 Part 2
+    }).get({
+      success: res => {
+        this.setData({
+          prompts: res.data,
+          currentImage: res.data.length > 0 ? res.data[0].image : '',
+          currentIndex: 0
+        });
+      },
+      fail: console.error
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
+  chooseImage: function() {
+    const { prompts, currentIndex } = this.data;
+    if (prompts.length === 0) return;
+    const nextIndex = (currentIndex + 1) % prompts.length;
+    this.setData({
+      currentIndex: nextIndex,
+      currentImage: prompts[nextIndex].image
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
+  startAnswering: function() {
+    wx.navigateTo({
+      url: '../writeAnswer/writeAnswer?image=' + this.data.currentImage
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+  bindCategoryChange: function(e) {
+    this.setData({
+      selectedCategory: this.data.categories[e.detail.value]
+    }, () => {
+      this.getPrompts();
+    });
   }
-})
+});
