@@ -1,11 +1,3 @@
-const options = {
-  duration: 60000, // 最长录音时长（ms）
-  sampleRate: 16000, // 采样率
-  numberOfChannels: 1, // 录音通道数
-  encodeBitRate: 96000, // 编码码率
-  format: 'aac' // 音频格式
-};
-
 Page({
   data: {
     categories: [
@@ -18,17 +10,20 @@ Page({
     recording: false,
     audioPath: '',
     transcript: '',
+    rawTranscriptionResult: '', // 新增属性，用于保存转写结果的原始数据
     score: null,
     feedback: ''
   },
 
   onLoad: function() {
-    this.setInitialCategory();
+    this.setInitialCategory(); // 设置初始类别
     this.recorderManager = wx.getRecorderManager();
 
     this.recorderManager.onStart(() => {
       console.log('Recorder start');
     });
+
+    this.cuid = this.getCUID(); // 保存 CUID 到页面实例
 
     this.recorderManager.onStop((res) => {
       console.log('Recorder stop', res);
@@ -36,7 +31,7 @@ Page({
         audioPath: res.tempFilePath,
         recording: false
       });
-      this.convertAndUploadAudio(res.tempFilePath);
+      this.uploadAudio();
     });
 
     this.recorderManager.onError((res) => {
@@ -46,8 +41,6 @@ Page({
         icon: 'none'
       });
     });
-
-    this.cuid = this.getCUID();
   },
 
   getCUID: function() {
@@ -84,65 +77,43 @@ Page({
 
   startRecording: function() {
     this.setData({ recording: true });
-    this.recorderManager.start(options);
+    this.recorderManager.start({
+      duration: 60000,
+      sampleRate: 16000,
+      numberOfChannels: 1,
+      encodeBitRate: 96000,
+      format: 'pcm'
+    });
     console.log('开始录音');
   },
 
   stopRecording: function() {
+    this.setData({ recording: false });
     this.recorderManager.stop();
     console.log('停止录音');
   },
 
-  convertAndUploadAudio: function(filePath) {
-    // 读取录音文件并转换为 base64
-    const fileSystemManager = wx.getFileSystemManager();
-    fileSystemManager.readFile({
-      filePath: filePath,
-      encoding: 'base64',
-      success: res => {
-        console.log('文件转换为 base64 成功');
-        const base64Data = res.data;
-        const len = this.getBase64Length(base64Data); // 计算音频数据的字节长度
+  uploadAudio: function() {
+    const { audioPath } = this.data;
+    if (!audioPath) {
+      wx.showToast({
+        title: '请先录音',
+        icon: 'none'
+      });
+      return;
+    }
 
-        // 打印调试信息
-        console.log('Base64 Data:', base64Data);
-        console.log('Length:', len);
-
-        // 调用上传和转写函数
-        this.uploadAndTranscribe(filePath, base64Data, len);
-      },
-      fail: err => {
-        console.error('读取文件失败:', err);
-        wx.showToast({
-          title: '文件读取失败',
-          icon: 'none'
-        });
-      }
-    });
-  },
-
-  getBase64Length: function(base64) {
-    // 去掉 base64 编码中的等号
-    const cleanBase64 = base64.replace(/=+$/, '');
-    return Math.floor(cleanBase64.length * 3 / 4);
-  },
-
-  uploadAndTranscribe: function(filePath, base64Data, len) {
     wx.showLoading({
-      title: '正在转写...',
+      title: '上传中',
     });
 
-    // 构建云路径
-    const cloudPath = `audio/${Date.now()}-${Math.floor(Math.random() * 1000)}.m4a`;
-
-    // 上传文件到云存储
+    const cloudPath = `audio/${Date.now()}-${Math.floor(Math.random() * 1000)}.pcm`;
     wx.cloud.uploadFile({
-      cloudPath: cloudPath,
-      filePath: filePath,
+      cloudPath,
+      filePath: audioPath,
       success: res => {
         console.log('上传成功', res.fileID);
-        // 调用云函数进行语音转写
-        this.callTranscribeFunction(res.fileID, base64Data, len);
+        this.callFunctionForTranscription(res.fileID);
       },
       fail: err => {
         console.error('上传失败', err);
@@ -150,43 +121,225 @@ Page({
           title: '上传失败，请重试',
           icon: 'none'
         });
+      },
+      complete: () => {
         wx.hideLoading();
       }
     });
   },
 
-  callTranscribeFunction: function(fileID, base64Data, len) {
-    // 调用云函数进行语音转写
+  callFunctionForTranscription: function(fileID) {
     wx.cloud.callFunction({
       name: 'transcribeAudio',
       data: {
         fileID: fileID,
-        speech: base64Data,
-        len: len,
-        cuid: this.cuid
+        cuid: this.cuid // 传递 CUID
       },
       success: res => {
         console.log('转写结果', res.result);
-        if (res.result.error) {
+        if (res.result.err_no !== 0) {
           wx.showToast({
-            title: '转写错误: ' + res.result.error,
+            title: res.result.err_msg,
             icon: 'none'
           });
         } else {
+          // 提取并设置转写文本
+          const transcription = res.result.result[0]; // 提取转写结果中的第一个元素
           this.setData({
-            transcript: res.result.result
+            transcript: transcription,
+            rawTranscriptionResult: JSON.stringify(res.result, null, 2) // 保存转写结果的原始数据，格式化为 JSON 字符串
           });
+          console.log('转写文本:', this.data.transcript); // 调试用，确保 transcript 被正确设置
         }
-        wx.hideLoading();
       },
       fail: err => {
-        console.error('调用转写失败', err);
+        console.error('转写失败', err);
         wx.showToast({
           title: '转写失败，请重试',
           icon: 'none'
         });
-        wx.hideLoading();
       }
     });
+  },
+
+  updateTranscript: function(e) {
+    this.setData({
+      transcript: e.detail.value
+    });
+  },
+
+  submitForScoring: function() {
+    wx.cloud.callFunction({
+      name: 'scoreTranscript',
+      data: {
+        transcript: this.data.transcript
+      },
+      success: res => {
+        console.log('评分结果', res.result);
+        if (res.result.error) {
+          wx.showToast({
+            title: res.result.error,
+            icon: 'none'
+          });
+        } else {
+          this.setData({
+            score: res.result.score,
+            feedback: res.result.feedback
+          });
+        }
+      },
+      fail: err => {
+        console.error('评分失败', err);
+        wx.showToast({
+          title: '评分失败，请重试',
+          icon: 'none'
+        });
+      }
+    });
+  },
+
+  retryRecording: function() {
+    this.setData({
+      audioPath: '',
+      transcript: '',
+      rawTranscriptionResult: '', // 重置原始转写结果数据
+      score: null,
+      feedback: ''
+    });
+    wx.showToast({
+      title: '请重新录音',
+      icon: 'none'
+    });
   }
+  ,
+  // 添加上传并转写按钮方法
+  uploadAndTranscribe: function() {
+      if (!this.data.audioPath) {
+          wx.showToast({
+              title: '请先录音',
+              icon: 'none'
+          });
+          return;
+      }
+  
+      wx.showLoading({
+          title: '上传中',
+      });
+  
+      const cloudPath = `audio/${Date.now()}-${Math.floor(Math.random() * 1000)}.pcm`;
+      wx.cloud.uploadFile({
+          cloudPath: cloudPath,
+          filePath: this.data.audioPath,
+          success: res => {
+              console.log('上传成功', res.fileID);
+              this.callFunctionForTranscription(res.fileID);
+          },
+          fail: err => {
+              console.error('上传失败', err);
+              wx.showToast({
+                  title: '上传失败，请重试',
+                  icon: 'none'
+              });
+          },
+          complete: () => {
+              wx.hideLoading();
+          }
+      });
+  },
+  
+  callFunctionForTranscription: function(fileID) {
+      wx.cloud.callFunction({
+          name: 'transcribeAudio',
+          data: {
+              fileID: fileID
+          },
+          success: res => {
+              console.log('转写结果', res.result);
+              if (res.result.err_no !== 0) {
+                  wx.showToast({
+                      title: res.result.err_msg,
+                      icon: 'none'
+                  });
+              } else {
+                  // 这里保存转写结果到data并显示
+                  this.setData({
+                      transcript: res.result.result[0],
+                  });
+                  // 可选：从数据库获取更多转写结果
+                  this.fetchTranscriptions();
+              }
+          },
+          fail: err => {
+              console.error('转写失败', err);
+              wx.showToast({
+                  title: '转写失败，请重试',
+                  icon: 'none'
+              });
+          }
+      });
+  },
+  
+  fetchTranscriptions: function() {
+  const db = wx.cloud.database();
+  db.collection('transcriptions')
+    .orderBy('timestamp', 'desc')
+    .limit(1)  // 确保只获取最新的一条记录
+    .get({
+        success: res => {
+            console.log('查询成功，返回数据:', res.data); // 调试信息，看返回什么数据
+            if (res.data.length > 0) {
+                this.setData({
+                    transcript: res.data[0].transcription  // 直接设置第一条记录的转写文本
+                });
+            } else {
+                wx.showToast({
+                    title: '未找到转写数据',
+                    icon: 'none'
+                });
+            }
+        },
+        fail: err => {
+            console.error('获取转写数据失败', err);
+            wx.showToast({
+                title: '获取数据失败，请重试',
+                icon: 'none'
+            });
+        }
+    });
+}
+,
+  // 确保你在小程序代码的某个函数内部调用这段代码，不要在控制台直接执行
+fetchLatestTranscription: function() {
+  const db = wx.cloud.database();
+  db.collection('userWritings').orderBy('submissionDate', 'desc').get({
+    success: res => {
+      if (res.data.length > 0) {
+        const feedbacks = res.data.map(record => record.feedback);
+        this.setData({
+          feedbacks: feedbacks
+        });
+      } else {
+        wx.showToast({
+          title: '没有找到记录',
+          icon: 'none'
+        });
+      }
+    },
+    fail: err => {
+      console.error('获取记录失败', err);
+      wx.showToast({
+        title: '获取记录失败',
+        icon: 'none'
+      });
+    }
+  });
+
+}
+
+  
+  
+  
+  
+
+
 });
