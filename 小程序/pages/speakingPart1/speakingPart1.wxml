@@ -9,18 +9,19 @@
   <button class="btn" bindtap="refreshQuestion">刷新题目</button>
   <button class="btn" bindtap="startRecording" wx:if="!recording">开始录音</button>
   <button class="btn" bindtap="stopRecording" wx:if="recording">停止录音</button>
-  <button class="btn" bindtap="fetchTranscriptions">上传并转写</button>
+  <button class="btn" bindtap="uploadAndTranscribe">上传并转写</button>
 
   <!-- 添加显示最新转写内容的视图 -->
-<view class="transcription-result" wx:if="{{transcriptions.length > 0}}">
+  <view class="transcription-result" wx:if="{{transcript}}">
     <text class="transcription-title">最新转写内容：</text>
-    <text class="transcription-content">{{transcriptions[0].transcription}}</text>
-</view>
+    <text class="transcription-content">{{transcript}}</text>
+  </view>
 
   <view class="transcript-display" wx:if="transcript">
     <textarea class="transcript-textarea" value="{{transcript}}" bindinput="updateTranscript" placeholder="核对并修改转写文本"></textarea>
     <button class="btn" bindtap="submitForScoring">提交并评分</button>
   </view>
+
   <view class="feedback-display" wx:if="score && feedback">
     <text>评分：{{score}}</text>
     <text>反馈：{{feedback}}</text>
