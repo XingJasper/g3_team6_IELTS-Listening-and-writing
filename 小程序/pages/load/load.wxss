@@ -1,0 +1,7 @@
+/* pages/load/load.wxss */
+.loadType{
+       margin-top: 800rpx;
+     }
+     button{
+       margin-top: 20rpx;
+     }

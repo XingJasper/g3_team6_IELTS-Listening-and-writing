@@ -90,42 +90,100 @@ Page({
       this.setData({ recording: false });
       this.recorderManager.stop();
       console.log('停止录音');
+      this.uploadAndTranscribe();
     },
   
     uploadAndTranscribe: function() {
-      const { audioPath } = this.data;
-      if (!audioPath) {
-        wx.showToast({
-          title: '请先录音',
-          icon: 'none'
-        });
-        return;
-      }
-  
-      wx.showLoading({
-        title: '上传中',
-      });
-  
-      const cloudPath = `audio/${Date.now()}-${Math.floor(Math.random() * 1000)}.pcm`;
-      wx.cloud.uploadFile({
-        cloudPath,
-        filePath: audioPath,
-        success: res => {
-          console.log('上传成功', res.fileID);
-          this.callFunctionForTranscription(res.fileID);
-        },
-        fail: err => {
-          console.error('上传失败', err);
-          wx.showToast({
-            title: '上传失败，请重试',
-            icon: 'none'
-          });
-        },
-        complete: () => {
-          wx.hideLoading();
+        const { audioPath } = this.data;
+        if (!audioPath) {
+            wx.showToast({
+                title: '请先录音',
+                icon: 'none'
+            });
+            return;
         }
-      });
+    
+        wx.showLoading({
+            title: '上传中...',
+        });
+    
+        const cloudPath = `audio/${Date.now()}-${Math.floor(Math.random() * 1000)}.pcm`;
+        wx.cloud.uploadFile({
+            cloudPath: cloudPath,
+            filePath: audioPath,
+            success: res => {
+                console.log('上传成功', res.fileID);
+                // 上传成功后调用转写函数
+                this.callFunctionForTranscription(res.fileID);
+            },
+            fail: err => {
+                console.error('上传失败', err);
+                wx.showToast({
+                    title: '上传失败，请重试',
+                    icon: 'none'
+                });
+            },
+            complete: () => {
+                wx.hideLoading();
+            }
+        });
     },
+    
+    callFunctionForTranscription: function(fileID) {
+        wx.cloud.callFunction({
+            name: 'transcribeAudio',
+            data: {
+                fileID: fileID
+            },
+            success: res => {
+                console.log('转写结果', res.result);
+                if (res.result.err_no !== 0) {
+                    wx.showToast({
+                        title: res.result.err_msg,
+                        icon: 'none'
+                    });
+                } else {
+                    this.fetchTranscriptions();
+                }
+            },
+            fail: err => {
+                console.error('转写失败', err);
+                wx.showToast({
+                    title: '转写失败，请重试',
+                    icon: 'none'
+                });
+            }
+        });
+    },
+    
+    fetchTranscriptions: function() {
+        const db = wx.cloud.database();
+        db.collection('transcriptions')
+          .orderBy('timestamp', 'desc')
+          .limit(1)
+          .get({
+              success: res => {
+                  if (res.data.length > 0) {
+                      this.setData({
+                          transcript: res.data[0].transcription
+                      });
+                  } else {
+                      wx.showToast({
+                          title: '未找到转写数据',
+                          icon: 'none'
+                      });
+                  }
+              },
+              fail: err => {
+                  console.error('获取转写数据失败', err);
+                  wx.showToast({
+                      title: '获取数据失败，请重试',
+                      icon: 'none'
+                  });
+              }
+          });
+    }
+,    
   
     callFunctionForTranscription: function(fileID) {
       wx.cloud.callFunction({
@@ -156,30 +214,30 @@ Page({
       });
     },
   
-    fetchLatestTranscription: function() {
-      const db = wx.cloud.database();
-      db.collection('transcriptions').orderBy('timestamp', 'desc').limit(1).get({
-        success: res => {
-          if (res.data.length > 0) {
-            this.setData({
-              transcript: res.data[0].transcription
-            });
-          } else {
-            wx.showToast({
-              title: '没有找到转写记录',
-              icon: 'none'
-            });
-          }
-        },
-        fail: err => {
-          console.error('获取转写记录失败', err);
-          wx.showToast({
-            title: '获取转写记录失败',
-            icon: 'none'
+    fetchTranscriptions: function() {
+        const db = wx.cloud.database();
+        console.log("Fetching transcriptions");
+    
+        db.collection('transcriptions')
+          .orderBy('timestamp', 'desc')
+          .limit(1)
+          .get({
+              success: res => {
+                  console.log("Fetch success:", res);
+                  if (res.data.length > 0) {
+                      this.setData({ transcript: res.data[0].transcription });
+                  } else {
+                      console.log("No data found");
+                      wx.showToast({ title: '未找到转写数据', icon: 'none' });
+                  }
+              },
+              fail: err => {
+                  console.error("Fetch error:", err);
+                  wx.showToast({ title: '获取数据失败，请重试', icon: 'none' });
+              }
           });
-        }
-      });
-    },
+    }
+,    
   
     updateTranscript: function(e) {
       this.setData({

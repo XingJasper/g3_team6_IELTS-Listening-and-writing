@@ -1,93 +1,93 @@
 page {
-  background-color: #f8f8f8;
-}
-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  margin: auto;
-  z-index: 100;
-}
-
-.login-container {
-  height: 900rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-/* 图标的样式 */
-.contact-filled {
-  width: 150rpx;
-  margin-bottom: 16rpx;
-}
-
-/* 登录按钮的样式 */
-.btn-login {
-  width: 90%;
-  border-radius: 100px;
-  margin: 15px 0;
-  background-color:black;
-  color: #f8f8f8;
-}
-
-/* 按钮下方提示消息的样式 */
-.tips-text {
-  font-size: 12px;
-  color: gray;
-}
-
-/* 用户信息样式 */
-.top-box {
-  height: 400rpx;
-  background-color:black;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-}
-
-/* 用户头像样式 */
-.top-box .avatar {
-  display: block;
-  width: 90px;
-  height: 90px;
-  border-radius: 45px;
-  border: 2px solid white;
-  box-shadow: 0 1px 5px black;
-}
-
-/* 用户昵称样式 */
-.top-box .nickname {
-  color: white;
-  font-weight: bold;
-  font-size: 16px;
-  margin-top: 10px;
-}
-
-/* 面板样式设置 */
-.panel {
-  background-color: white;
-  border-radius: 3px;
-}
-
-.panel-list-item {
-  height: 45px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 15px;
-  padding: 0 10px;
-}
-
-/* 箭头样式 */
-.panel-list-item image {
-  width: 60rpx;
-  height: 60rpx;
-}
+    background-color: #f8f8f8;
+  }
+  modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    margin: auto;
+    z-index: 100;
+  }
+  
+  .login-container {
+    height: 900rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* 图标的样式 */
+  .contact-filled {
+    width: 150rpx;
+    margin-bottom: 16rpx;
+  }
+  
+  /* 登录按钮的样式 */
+  .btn-login {
+    width: 90%;
+    border-radius: 100px;
+    margin: 15px 0;
+    background-color:black;
+    color: #f8f8f8;
+  }
+  
+  /* 按钮下方提示消息的样式 */
+  .tips-text {
+    font-size: 12px;
+    color: gray;
+  }
+  
+  /* 用户信息样式 */
+  .top-box {
+    height: 400rpx;
+    background-color:black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  
+  }
+  
+  /* 用户头像样式 */
+  .top-box .avatar {
+    display: block;
+    width: 90px;
+    height: 90px;
+    border-radius: 45px;
+    border: 2px solid white;
+    box-shadow: 0 1px 5px black;
+  }
+  
+  /* 用户昵称样式 */
+  .top-box .nickname {
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  /* 面板样式设置 */
+  .panel {
+    background-color: white;
+    border-radius: 3px;
+  }
+  
+  .panel-list-item {
+    height: 45px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    padding: 0 10px;
+  }
+  
+  /* 箭头样式 */
+  .panel-list-item image {
+    width: 60rpx;
+    height: 60rpx;
+  }
