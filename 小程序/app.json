@@ -10,14 +10,21 @@
     "pages/writePart2/writePart2",
     "pages/uploadPage/uploadPage",
     "pages/writeAnswer/writeAnswer",
-    "pages/load/load"
+    "pages/register/register"
+    
+  
+    
+    
+  
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#000000",
     "navigationBarTextStyle": "white",
     "navigationBarTitleText": "Evalinguist"
-  },
+  }
+  
+   ,
   "tabBar": {
     "color": "#a9b7b7",
     "selectedColor": "#11cd6e",
@@ -54,6 +61,10 @@
         "iconPath": "images/me.jpg",
         "selectedIconPath": "images/me.jpg"
       }
+      
     ]
+    
   }
+  
 }
+

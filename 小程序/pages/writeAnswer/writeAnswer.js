@@ -2,10 +2,19 @@ Page({
   data: {
     imageURL: '',
     writingContent: '',
-    feedback: ''
+    feedback: '',
+    username: '' // 添加一个字段来存储用户名
   },
 
   onLoad: function(options) {
+    // 获取全局用户名
+    const app = getApp();
+    const username = app.globalData.loggedInUsername;
+
+    this.setData({
+      username: username
+    });
+
     if (options.image) {
       this.setData({
         imageURL: options.image
@@ -20,7 +29,7 @@ Page({
   },
 
   submitWriting: function() {
-    const { imageURL, writingContent } = this.data;
+    const { imageURL, writingContent, username } = this.data;
     
     // 计算字数
     const wordCount = writingContent.split(/\s+/).filter(word => word.length > 0).length;
@@ -61,6 +70,7 @@ Page({
           const db = wx.cloud.database();
           db.collection('userWritings').add({
             data: {
+              username: username, // 添加用户名字段
               imageURL: imageURL,
               writingContent: writingContent,
               feedback: feedback,

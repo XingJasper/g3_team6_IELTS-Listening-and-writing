@@ -1,3 +1,6 @@
+/* 引入 weui 的样式 */
+@import "/dist/style/weui.wxss";
+
 .container {
   display: flex;
   flex-direction: column;
@@ -6,10 +9,22 @@
   padding: 20px;
 }
 
-.picker {
+.weui-cell {
+  width: 100%;
   margin: 10px 0;
 }
 
-button {
-  margin: 10px;
+.custom-btn {
+  width: 80%; /* 调整按钮宽度 */
+  margin: 10px 0;
+  padding: 5px 10px; /* 调整按钮内边距 */
+  font-size: 14px; /* 调整字体大小 */
+  color: #000; /* 设置字体颜色为黑色 */
+  background-color: #d3d3d3; /* 设置背景颜色为灰色 */
+  border: none; /* 移除按钮边框 */
+}
+
+.selected-image {
+  width: 100%;
+  margin: 10px 0;
 }

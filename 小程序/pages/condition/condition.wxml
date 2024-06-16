@@ -1,25 +1,28 @@
 <view class="container">
-  <button bindtap="recordListening">听力情况记录</button>
-  <button bindtap="recordWriting">写作情况记录</button>
-  
-  <!-- 弹窗 -->
-  <view wx:if="{{showModal}}" class="modal">
-    <view class="modal-content">
-      <view class="modal-header">
-        <text>所有记录</text>
-      </view>
-      <view class="modal-body">
-        <scroll-view scroll-y="true" class="scroll-view">
+  <block wx:if="{{!loggedIn}}">
+    <text>请先登录</text>
+  </block>
+  <block wx:else>
+    <button class="weui-btn custom-btn" bindtap="recordListening">听力情况记录</button>
+    <button class="weui-btn custom-btn" bindtap="recordWriting">写作情况记录</button>
+    
+    <!-- 弹窗 -->
+    <view wx:if="{{showModal}}" class="modal" catchtap="hideModal">
+      <view class="modal-content" catchtap="stopPropagation">
+        <view class="modal-header">
+          <text>所有记录</text>
+        </view>
+        <scroll-view scroll-y="true" class="modal-body">
           <block wx:for="{{feedbacks}}" wx:key="index">
             <view class="record-item">
               <text>{{item}}</text>
             </view>
           </block>
         </scroll-view>
-      </view>
-      <view class="modal-footer">
-        <button bindtap="hideModal">关闭</button>
+        <view class="modal-footer">
+          <button class="weui-btn custom-btn" bindtap="hideModal">关闭</button>
+        </view>
       </view>
     </view>
-  </view>
+  </block>
 </view>

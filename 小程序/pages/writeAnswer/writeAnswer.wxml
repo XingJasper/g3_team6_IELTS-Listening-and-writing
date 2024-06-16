@@ -13,6 +13,6 @@
     <text>评分: {{score}}</text>
   </view>
   <view wx:if="{{feedback}}">
-    <text>反馈: {{feedback}}</text>
+    <text>[反馈]{{feedback}}</text>
   </view>
 </view>

@@ -1,15 +1,23 @@
+/* 引入 weui 的样式 */
+@import "/dist/style/weui.wxss";
+
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  height: 100vh;
+  align-items: center;
+  height: 100vh; /* 使容器高度为视口高度，以便按钮居中 */
 }
 
-button {
-  margin: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
+.custom-btn {
+  color: #000; /* 设置字体颜色为黑色 */
+  background-color: #fff; /* 设置背景颜色为白色 */
+}
+
+.weui-btn {
+  margin: 100px auto; /* 按钮之间的间距 */
+  color: #000; /* 设置字体颜色为黑色 */
+  background-color: lightgray; /* 设置背景颜色为浅灰色 */
 }
 
 .modal {
@@ -22,41 +30,35 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .modal-content {
-  background-color: #fff;
+  background-color: white;
   padding: 20px;
   border-radius: 10px;
   width: 80%;
-  max-height: 70%; 
+  height: 80%;
   display: flex;
   flex-direction: column;
 }
 
-.modal-header {
-  font-size: 20px;
-  font-weight: bold;
+.modal-header, .modal-footer {
+  text-align: center;
   margin-bottom: 10px;
 }
 
 .modal-body {
   flex: 1;
-  overflow: hidden;
-}
-
-.scroll-view {
-  height: 100%; 
-  max-height: 60vh; /* 设置滚动视图的最大高度 */
-  overflow-y: scroll; /* 确保溢出时滚动 */
-}
-
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
+  overflow-y: scroll;
+  padding: 10px;
+  border: 1px solid #ddd;
+  
 }
 
 .record-item {
   margin-bottom: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+ 
 }

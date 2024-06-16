@@ -1,108 +1,121 @@
-// pages/home/home.js
-const app = getApp();  // 获取小程序全局应用实例
-
 Page({
-  /**
-   * 页面的初始数据
-   */
   data: {
-    userInfo: null,
-    showSupportImageModal: false // 新增Modal显示控制
+    username: '',
+    password: '',
+    isLoggedin: false,
+    loggedInUsername: '',
+    contactImage: '/images/cnt.jpg', // 确保图片路径正确
+    showModal: false // 控制图片弹出层显示状态
   },
 
-  showSupportImageModal() {
+  bindUsernameInput: function(e) {
     this.setData({
-      showSupportImageModal: true
+      username: e.detail.value
     });
   },
 
-  hideSupportImageModal() {
+  bindPasswordInput: function(e) {
     this.setData({
-      showSupportImageModal: false
+      password: e.detail.value
     });
   },
 
-  login() {
-    wx.getUserProfile({
-      desc: '获取用户信息',
-      success: res => {
-        console.log(res.userInfo)
-        var user = res.userInfo
-        //设置全局用户信息
-        app.globalData.userInfo = user
-        //设置局部用户信息
-        this.setData({
-          userInfo: user
-        })
+  login: function() {
+    const { username, password } = this.data;
 
-        //将数据添加到数据库
-        wx.cloud.database().collection('userInfo').add({
-          data: {
-            avatarUrl: user.avatarUrl,
-            nickName: user.nickName
-          },
-          success: res => {
-            console.log(res)
-          }
-        })
+    // 简单验证
+    if (!username || !password) {
+      wx.showToast({
+        title: '请输入用户名和密码',
+        icon: 'none'
+      });
+      return;
+    }
+
+    // 调用云函数
+    wx.cloud.callFunction({
+      name: 'get_openId',
+      data: {
+        action: 'login',
+        username: username,
+        password: password
+      },
+      success: (res) => {
+        if (res.result.success) {
+          wx.showToast({
+            title: res.result.message,
+            icon: 'success'
+          });
+          // 登录成功，设置登录状态和用户名
+          this.setData({
+            isLoggedin: true,
+            loggedInUsername: username
+          });
+          wx.setStorageSync('loggedIn', true);
+          wx.setStorageSync('loggedInUsername', username); // 存储用户名
+          const app = getApp();
+          app.globalData.loggedIn = true;
+          app.globalData.loggedInUsername = username; // 设置全局用户名
+     
+        } else {
+          wx.showToast({
+            title: res.result.message,
+            icon: 'none'
+          });
+        }
+      },
+      fail: (err) => {
+        wx.showToast({
+          title: '登录失败，请稍后再试',
+          icon: 'none'
+        });
       }
-    })
-  },
-
-  logout() {
-    app.globalData.userInfo = null
-    this.setData({
-      userInfo: null
-    })
-  },
-
-  settings() {
-    wx.navigateTo({
-      url:'/pages/uploadPage/uploadPage'
     });
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
+  logout: function() {
     this.setData({
-      userInfo: app.globalData.userInfo
-    })
+      isLoggedin: false,
+      username: '',
+      password: '',
+      loggedInUsername: ''
+    });
+    wx.setStorageSync('loggedIn', false); // 确保清除本地存储中的登录状态
+    wx.setStorageSync('loggedInUsername', ''); // 清除本地存储中的用户名
+    const app = getApp();
+    app.globalData.loggedIn = false;
+    app.globalData.loggedInUsername = '';
+    wx.showToast({
+      title: '已退出登录',
+      icon: 'success'
+    });
+    // 退出登录后跳转到登录页面
+    wx.redirectTo({
+      url: '/pages/me/me'
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {},
+  register: function() {
+    wx.navigateTo({
+      url: '/pages/register/register' // 确保路径正确
+    });
+  },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {},
+  showContactImage: function() {
+    this.setData({
+      showModal: true // 显示图片弹出层
+    });
+  },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {},
+  closeModal: function() {
+    this.setData({
+      showModal: false // 关闭图片弹出层
+    });
+  },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {},
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {},
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {},
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {}
+  navigateToUploadPage: function() {
+    wx.navigateTo({
+      url: '/pages/uploadPage/uploadPage' // 确保路径正确
+    });
+  }
 });

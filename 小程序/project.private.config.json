@@ -4,7 +4,7 @@
   "projectname": "IELTS",
   "setting": {
     "compileHotReLoad": false,
-    "urlCheck": false
+    "urlCheck": true
   },
   "libVersion": "3.4.3"
 }

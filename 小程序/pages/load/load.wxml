@@ -1,5 +1,0 @@
-<view class="loadType">
-2 <button type="primary" bindtap="loadByWechat">微信授权登录</button>
-3 <button type="primary" plain="true" bindtap="loadByPhone">手机号码登录</button>
-4 <button type="primary" plain="true" bindtap="loadByAccount">账号密码登录</button>
-5 </view>

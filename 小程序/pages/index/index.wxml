@@ -20,8 +20,8 @@
         <text class="userinfo-nickname">{{userInfo.nickName}}</text>
       </block>
     </view>
-    <view class="usermotto">
-      <text class="user-motto">{{motto}}</text>
+    <view class="login-button-wrapper">
+      <button bindtap="getUserProfile"> 登录 </button> <!-- 登录按钮 -->
     </view>
   </view>
 </scroll-view>

@@ -1,6 +1,10 @@
-<!-- write.wxml -->
-<!-- write.wxml -->
 <view class="container">
-  <button class="weui-btn weui-btn_plain-default" bindtap="navigateToPart1">Part 1</button>
-  <button class="weui-btn weui-btn_plain-default" bindtap="navigateToPart2">Part 2</button>
+  <block wx:if="{{!loggedIn}}">
+    <text>请先登录</text>
+  </block>
+  <block wx:else>
+   
+    <button class="weui-btn weui-btn_plain-default" bindtap="navigateToPart1">Part 1</button>
+    <button class="weui-btn weui-btn_plain-default" bindtap="navigateToPart2">Part 2</button>
+  </block>
 </view>
