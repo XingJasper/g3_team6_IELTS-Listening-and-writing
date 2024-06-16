@@ -94,38 +94,6 @@ Page({
   },
 
   uploadAndTranscribe: function() {
-<<<<<<< Updated upstream
-    const { audioPath } = this.data;
-    if (!audioPath) {
-      wx.showToast({
-        title: '请先录音',
-        icon: 'none'
-      });
-      return;
-    }
-
-    wx.showLoading({
-      title: '上传中',
-    });
-
-    const cloudPath = `audio/${Date.now()}-${Math.floor(Math.random() * 1000)}.pcm`;
-    wx.cloud.uploadFile({
-      cloudPath,
-      filePath: audioPath,
-      success: res => {
-        console.log('上传成功', res.fileID);
-        this.callFunctionForTranscription(res.fileID);
-      },
-      fail: err => {
-        console.error('上传失败', err);
-        wx.showToast({
-          title: '上传失败，请重试',
-          icon: 'none'
-        });
-      },
-      complete: () => {
-        wx.hideLoading();
-=======
       const { audioPath } = this.data;
       if (!audioPath) {
           wx.showToast({
@@ -133,7 +101,6 @@ Page({
               icon: 'none'
           });
           return;
->>>>>>> Stashed changes
       }
   
       wx.showLoading({
@@ -247,35 +214,6 @@ Page({
     });
   },
 
-<<<<<<< Updated upstream
-  fetchLatestTranscription: function() {
-      const db = wx.cloud.database();
-      console.log('正在查询最新的转录数据...');
-      db.collection('transcriptions').orderBy('timestamp', 'desc').limit(1).get({
-          success: res => {
-              console.log('查询成功，返回数据：', res.data);
-              if (res.data.length > 0) {
-                  this.setData({
-                      transcript: res.data[0].transcription
-                  });
-                  console.log('转录数据已更新');
-              } else {
-                  wx.showToast({
-                      title: '没有找到转写记录',
-                      icon: 'none'
-                  });
-                  console.log('未查询到转录数据');
-              }
-          },
-          fail: err => {
-              console.error('查询转录数据失败：', err);
-              wx.showToast({
-                  title: '获取转写记录失败',
-                  icon: 'none'
-              });
-          }
-      });
-=======
   fetchTranscriptions: function() {
       const db = wx.cloud.database();
       console.log("Fetching transcriptions");
@@ -298,7 +236,6 @@ Page({
                 wx.showToast({ title: '获取数据失败，请重试', icon: 'none' });
             }
         });
->>>>>>> Stashed changes
   }
 ,    
 
