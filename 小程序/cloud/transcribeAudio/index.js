@@ -31,12 +31,14 @@ exports.main = async (event, context) => {
       rate: 16000,
       channel: 1,
       token: "24.392102e0287389372566ae2368af20c7.2592000.1720340061.282335-78943325",
+      dev_pid : 1737,
       cuid: cuid,
       speech: audioBase64,
       len: audioBuffer.length
     };
 
     console.log('Request Data:', data);
+
 
     // 调用百度语音转文字API
     const asrResponse = await axios({
