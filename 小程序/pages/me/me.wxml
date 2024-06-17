@@ -1,0 +1,42 @@
+<view class="container">
+  <block wx:if="{{!isLoggedin}}">
+    <view class="weui-cells__title">登录</view>
+    <view class="weui-cells weui-cells_form">
+      <view class="weui-cell">
+        <view class="weui-cell__hd"><label class="weui-label">用户名</label></view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" type="text" placeholder="请输入用户名" bindinput="bindUsernameInput" />
+        </view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__hd"><label class="weui-label">密码</label></view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" type="password" placeholder="请输入密码" bindinput="bindPasswordInput" />
+        </view>
+      </view>
+    </view>
+    <view class="btn-group">
+      <button class="weui-btn weui-btn_primary custom-btn" bindtap="login">登录</button>
+      <button class="weui-btn weui-btn_default custom-btn" bindtap="register">注册</button>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="loggedin-info">
+      <text class="welcome-text">欢迎, {{loggedInUsername}}</text>
+    </view>
+    <view class="btn-group">
+      <button class="weui-btn weui-btn_default custom-btn" bindtap="showContactImage">联系我们</button>
+      <button class="weui-btn weui-btn_default custom-btn" bindtap="navigateToUploadPage">添加写作题目</button>
+    </view>
+    <view class="logout-link">
+      <text class="logout-text" bindtap="logout">退出登录</text>
+    </view>
+  </block>
+
+  <!-- 图片弹出层 -->
+  <view wx:if="{{showModal}}" class="modal" catchtap="closeModal">
+    <view class="modal-content" catchtap="stopPropagation">
+      <image src="{{contactImage}}" class="modal-image"></image>
+    </view>
+  </view>
+</view>

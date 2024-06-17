@@ -1,0 +1,21 @@
+/* 引入 weui 的样式 */
+@import "/dist/style/weui.wxss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* 使容器高度为视口高度，以便按钮居中 */
+}
+
+.custom-btn {
+  color: #000; /* 设置字体颜色为黑色 */
+  background-color: #fff; /* 设置背景颜色为白色 */
+}
+
+.weui-btn {
+  margin: 100px auto; /* 按钮之间的间距 */
+  color: #000; /* 设置字体颜色为黑色 */
+  background-color: lightgray; /* 设置背景颜色为浅灰色 */
+}
