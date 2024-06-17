@@ -12,10 +12,18 @@ Page({
       transcript: '',
       rawTranscriptionResult: '',
       score: null,
-      feedback: ''
+      feedback: '',
+      username: '' // 添加一个字段来存储用户名
     },
   
-    onLoad: function() {
+    onLoad:function(options) {
+      // 获取全局用户名
+      const app = getApp();
+      const username = app.globalData.loggedInUsername;
+  
+      this.setData({
+        username: username
+      });
       this.setInitialCategory();
       this.recorderManager = wx.getRecorderManager();
   
@@ -254,6 +262,9 @@ Page({
             });
             return;
         }
+        wx.showLoading({
+          title: '正在提交...',
+      });
 
         wx.cloud.callFunction({
             name: 'evaluateSpeaking',
@@ -280,6 +291,7 @@ Page({
                             transcript: transcript,
                             score: this.data.score,
                             feedback: this.data.feedback,
+                            username: this.data.username, // 添加用户名字段
                             timestamp: new Date(),
                         },
                         success: saveResult => {
@@ -289,6 +301,10 @@ Page({
                             console.error('保存评分结果失败:', saveError);
                         }
                     });
+                    wx.showToast({
+                      title: '提交成功',
+                      icon: 'success'
+                  })
                 } else {
                     wx.showToast({
                         title: res.result.error || '评分失败，请重试',

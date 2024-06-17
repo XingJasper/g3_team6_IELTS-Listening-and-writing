@@ -18,11 +18,14 @@
 
     <view class="transcript-display" wx:if="transcript">
         <textarea class="transcript-textarea" value="{{transcript}}" bindinput="updateTranscript" placeholder="核对并修改转写文本" maxlength="-1" auto-height="true"></textarea>
-        <button class="btn" bindtap="submitForScoring">提交并评分</button>
+        <button class="btn" bindtap="submitForScoring" >提交并评分</button>
     </view>
 
     <!-- 新增显示评分结果的文本框 -->
-    <view class="transcript-display" wx:if="score && feedback">
-        <textarea class="transcript-textarea" value="评分：{{score}}\n反馈：{{feedback}}" readonly auto-height="true"></textarea>
-    </view>
+    <view wx:if="{{score}}">
+    <text>评分: {{score}}</text>
+  </view>
+  <view wx:if="{{feedback}}">
+    <text>[反馈]{{feedback}}</text>
+  </view>
 </view>

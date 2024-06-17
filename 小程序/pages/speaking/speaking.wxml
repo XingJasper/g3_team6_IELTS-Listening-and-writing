@@ -1,7 +1,12 @@
-<!-- pages/index/index.wxml -->
 <view class="container">
-  <button bindtap="goToPart1">雅思口语 Part 1</button>
-  <button bindtap="goToPart2">雅思口语 Part 2</button>
-  <button bindtap="goToPart3">雅思口语 Part 3</button>
+  <block wx:if="{{!loggedIn}}">
+    <text>请先登录</text>
+  </block>
+  <block wx:else>
+
+  <button class="weui-btn weui-btn_plain-default" bindtap="goToPart1">Part 1</button>
+  <button class="weui-btn weui-btn_plain-default" bindtap="goToPart2">Part 2</button>
+  <button class="weui-btn weui-btn_plain-default" bindtap="goToPart3">Part 3</button>
+  </block>
 </view>
         

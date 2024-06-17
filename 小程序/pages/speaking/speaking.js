@@ -1,6 +1,47 @@
 // pages/index/index.js
 Page({
-    data: {},
+  data: {
+    loggedIn: false,
+    username: '' // 添加一个字段来存储用户名
+  },
+
+  onLoad: function (options) {
+    // 检查登录状态
+    const app = getApp();
+    const loggedIn = app.globalData.loggedIn;
+
+    console.log('loggedIn:', loggedIn); // 调试输出
+
+    if (!loggedIn) {
+      this.setData({
+        loggedIn: false
+      });
+    } else {
+      this.setData({
+        loggedIn: true,
+        username: app.globalData.loggedInUsername // 获取全局用户名
+      });
+    }
+  },
+
+  onShow: function () {
+    // 检查登录状态
+    const app = getApp();
+    const loggedIn = app.globalData.loggedIn;
+
+    console.log('onShow loggedIn:', loggedIn); // 调试输出
+
+    if (!loggedIn) {
+      this.setData({
+        loggedIn: false
+      });
+    } else {
+      this.setData({
+        loggedIn: true,
+        username: app.globalData.loggedInUsername // 获取全局用户名
+      });
+    }
+  },
   
     goToPart1: function() {
       wx.navigateTo({

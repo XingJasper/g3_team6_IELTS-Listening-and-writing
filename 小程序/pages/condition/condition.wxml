@@ -13,10 +13,21 @@
           <text>所有记录</text>
         </view>
         <scroll-view scroll-y="true" class="modal-body">
-          <block wx:for="{{feedbacks}}" wx:key="index">
-            <view class="record-item">
-              <text>{{item}}</text>
-            </view>
+          <block wx:if="{{modalType === 'listening'}}">
+            <block wx:for="{{feedbacks}}" wx:key="index">
+              <view class="record-item">
+                <text>分数: {{item.score}}</text>
+                <view style="height: 10px;"></view> <!-- 插入空行 -->
+                <text>{{item.feedback}}</text>
+              </view>
+            </block>
+          </block>
+          <block wx:if="{{modalType === 'writing'}}">
+            <block wx:for="{{feedbacks}}" wx:key="index">
+              <view class="record-item">
+                <text>{{item}}</text>
+              </view>
+            </block>
           </block>
         </scroll-view>
         <view class="modal-footer">
