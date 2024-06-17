@@ -248,45 +248,63 @@ Page({
     submitForScoring: function() {
         const { transcript } = this.data;
         if (!transcript) {
-          wx.showToast({
-            title: '请先转写或输入文本',
-            icon: 'none'
-          });
-          return;
-        }
-  
-        wx.cloud.callFunction({
-          name: 'evaluateSpeaking',
-          data: {
-            writingContent: transcript
-          },
-          success: res => {
-            console.log('评分结果', res.result);
-            if (res.result && res.result.success) {
-              const feedbackLines = res.result.feedback.split('\n');
-              const scoreLine = feedbackLines.find(line => line.startsWith('分数：'));
-              const feedbackLine = feedbackLines.find(line => line.startsWith('评语：'));
-  
-              this.setData({
-                score: scoreLine ? scoreLine.split('：')[1] : 'N/A',
-                feedback: feedbackLine ? feedbackLine.split('：')[1] : 'N/A'
-              });
-            } else {
-              wx.showToast({
-                title: res.result.error || '评分失败，请重试',
-                icon: 'none'
-              });
-            }
-          },
-          fail: err => {
-            console.error('评分失败', err);
             wx.showToast({
-              title: '评分失败，请重试',
-              icon: 'none'
+                title: '请先转写或输入文本',
+                icon: 'none'
             });
-          }
+            return;
+        }
+
+        wx.cloud.callFunction({
+            name: 'evaluateSpeaking',
+            data: {
+                writingContent: transcript
+            },
+            success: res => {
+                console.log('评分结果', res.result);
+                if (res.result && res.result.success) {
+                    const feedbackLines = res.result.feedback.split('\n');
+                    const scoreLine = feedbackLines.find(line => line.startsWith('分数：'));
+                    const feedbackLine = feedbackLines.find(line => line.startsWith('评语：'));
+
+                    this.setData({
+                        score: scoreLine ? scoreLine.split('：')[1].trim() : 'N/A',
+                        feedback: feedbackLine ? feedbackLine.split('：')[1].trim() : 'N/A'
+                    });
+
+                    // 保存评分结果到数据库 userSpeakings 集合
+                    const db = wx.cloud.database();
+                    db.collection('userSpeakings').add({
+                        data: {
+                            cuid: this.cuid,
+                            transcript: transcript,
+                            score: this.data.score,
+                            feedback: this.data.feedback,
+                            timestamp: new Date(),
+                        },
+                        success: saveResult => {
+                            console.log('保存评分结果到数据库:', saveResult);
+                        },
+                        fail: saveError => {
+                            console.error('保存评分结果失败:', saveError);
+                        }
+                    });
+                } else {
+                    wx.showToast({
+                        title: res.result.error || '评分失败，请重试',
+                        icon: 'none'
+                    });
+                }
+            },
+            fail: err => {
+                console.error('评分失败', err);
+                wx.showToast({
+                    title: '评分失败，请重试',
+                    icon: 'none'
+                });
+            }
         });
-      },
+    },
   
     retryRecording: function() {
       this.setData({
