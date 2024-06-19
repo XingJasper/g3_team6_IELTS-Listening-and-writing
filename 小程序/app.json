@@ -10,21 +10,16 @@
     "pages/writePart2/writePart2",
     "pages/uploadPage/uploadPage",
     "pages/writeAnswer/writeAnswer",
-    "pages/register/register"
-    
-  
-    
-    
-  
+    "pages/register/register",
+    "pages/speakingPart2/speakingPart2",
+    "pages/speakingPart3/speakingPart3"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#000000",
     "navigationBarTextStyle": "white",
     "navigationBarTitleText": "Evalinguist"
-  }
-  
-   ,
+  },
   "tabBar": {
     "color": "#a9b7b7",
     "selectedColor": "#11cd6e",
@@ -61,10 +56,6 @@
         "iconPath": "images/me.jpg",
         "selectedIconPath": "images/me.jpg"
       }
-      
     ]
-    
   }
-  
 }
-

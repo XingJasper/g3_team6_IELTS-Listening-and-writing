@@ -11,7 +11,7 @@ exports.main = async (event, context) => {
   const apiKey = 'sk-ywpVIbyhkKRDNXbrBd82D64e92D44a328a52070247DaE685';
 
   // 指令提示
-  const prompt = `你现在是一个雅思考官，请对学生所写的雅思口语Part1部分（语言转文字的结果）打分，并给出简短的中文评语（50字以内）。雅思写作评分依据四个标准：1. 流利度和连贯性	2.词汇资源 3. 语法范围和准确性。4. 发音 以下是雅思口语题目：“${question}” 输出格式为："分数：<分数>\\n评语：<评语>"。以下是学生的回答：\n\n${writingContent}`;
+  const prompt = `你现在是一个雅思考官，请对学生所写的雅思口语Part2部分（语言转文字的结果）打分，并给出简短的中文评语（50字以内）。雅思写作评分依据四个标准：1. 流利度和连贯性	2.词汇资源 3. 语法范围和准确性。4. 发音 以下是雅思口语题目：“${question}” 输出格式为："分数：<分数>\\n评语：<评语>"。以下是学生的回答：\n\n${writingContent}`;
 
   try {
     const response = await axios.post(

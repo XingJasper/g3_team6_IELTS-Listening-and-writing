@@ -1,10 +1,11 @@
 Page({
     data: {
         categories: [
-            { id: 1, name: '工作', questions: ['Can you describe your job?', 'How do you feel about your coworkers?'] },
-            { id: 2, name: '学习', questions: ['What subject are you studying?', 'Why did you choose this subject?'] },
-            { id: 3, name: '爱好', questions: ['Do you have any hobbies?', 'How did you start this hobby?'] }
+            { id: 1, name: '工作', questions: ['Describe a job you would like to have in the future.', 'Describe an experience where you had to work as part of a team.', 'Describe a challenging situation at work and how you handled it.', 'Describe someone at work who has inspired you.'] },
+            { id: 2, name: '学习', questions: ['Describe a subject you enjoyed studying at school.', 'Describe a time when you learned something new.', 'Describe your experience of learning a foreign language.', 'Describe a useful skill you learned in a class.'] },
+            { id: 3, name: '爱好', questions: ['Describe an interesting hobby you know about.', 'Describe a book you have read recently and enjoyed.', 'Describe a movie you watched recently and liked.', 'Describe a sport or game that you enjoy playing.'] }
         ],
+        
         currentCategory: null,
         currentQuestion: '',
         recording: false,
@@ -220,7 +221,7 @@ Page({
         });
 
         wx.cloud.callFunction({
-            name: 'evaluateSpeaking',
+            name: 'evaluateSpeakingPart2',
             data: {
                 writingContent: transcript,
                 question: currentQuestion  // 将当前问题作为参数传递

@@ -1,10 +1,12 @@
 Page({
     data: {
         categories: [
-            { id: 1, name: '工作', questions: ['Can you describe your job?', 'How do you feel about your coworkers?'] },
-            { id: 2, name: '学习', questions: ['What subject are you studying?', 'Why did you choose this subject?'] },
-            { id: 3, name: '爱好', questions: ['Do you have any hobbies?', 'How did you start this hobby?'] }
-        ],
+            { id: 1, name: '工作', questions: ['What qualities are important for a person to be successful in his/her job?', 'How do you think technology has changed the way we work?', 'Do you think job satisfaction is more important than salary?', 'What are the advantages and disadvantages of working from home?'] },
+            { id: 2, name: '学习', questions: ['How has the education system changed in your country in the last decade?', 'Do you think it is important to have a formal education?', 'What role do you think technology plays in education today?', 'How do you think studying abroad affects a student?'] },
+            { id: 3, name: '爱好', questions: ['Why do you think people take up hobbies?', 'How can hobbies affect someone’s social life?', 'Do you think hobbies should be more about relaxation or about learning new skills?', 'What are the benefits of having a hobby in maintaining mental health?'] }
+        ]
+        ,
+        
         currentCategory: null,
         currentQuestion: '',
         recording: false,
@@ -220,7 +222,7 @@ Page({
         });
 
         wx.cloud.callFunction({
-            name: 'evaluateSpeaking',
+            name: 'evaluateSpeakingPart3',
             data: {
                 writingContent: transcript,
                 question: currentQuestion  // 将当前问题作为参数传递
