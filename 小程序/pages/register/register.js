@@ -36,7 +36,7 @@ Page({
     }
 
     // 验证手机号长度
-    if (phone.length !== 11) {
+    if (!/^1[3-9]\d{9}$/.test(phone)) {
       wx.showToast({
         title: '手机号必须为11位',
         icon: 'none'
